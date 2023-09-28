@@ -137,7 +137,7 @@ app.get('/music', async (req, res) => {
     res.send('hiepvjpsieucappro')
   } catch (error) {
     console.error(error)
-    res.status(500).send('Internal Server Error') // Handle errors gracefully and send an error response
+    res.status(500).send('hihi') // Handle errors gracefully and send an error response
   }
 })
 
