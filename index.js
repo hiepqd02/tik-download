@@ -21,7 +21,9 @@ app.get('/user', async (req, res) => {
   const { url, limit } = req.query // Use req.query to get query parameters
   const data = []
   try {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    })
     const page = await browser.newPage()
 
     await page.goto(url) // Replace with your URL
@@ -81,7 +83,9 @@ app.get('/music', async (req, res) => {
   const { url, limit } = req.query // Use req.query to get query parameters
   const data = []
   try {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    })
     const page = await browser.newPage()
 
     await page.goto(url) // Replace with your URL
@@ -141,7 +145,9 @@ app.get('/tag', async (req, res) => {
   const { tag, limit } = req.query // Use req.query to get query parameters
   const data = []
   try {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    })
     const page = await browser.newPage()
 
     await page.goto(`https://www.tiktok.com/tag/${tag}`) // Replace with your URL
