@@ -2,6 +2,8 @@ const express = require('express')
 const puppeteer = require('puppeteer')
 const axios = require('axios')
 
+require('dotenv').config()
+
 const app = express()
 
 app.get('/video', async (req, res) => {
