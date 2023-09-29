@@ -146,6 +146,10 @@ app.get('/tag', async (req, res) => {
   const data = []
   try {
     const browser = await puppeteer.launch({
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_PATH
+          : puppeteer.executablePath(),
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
     const page = await browser.newPage()
