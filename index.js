@@ -22,13 +22,36 @@ app.get('/video', async (req, res) => {
 app.get('/user', async (req, res) => {
   const { url, limit } = req.query // Use req.query to get query parameters
   const data = []
+
   try {
     const browser = await puppeteer.launch({
-      headless: 'false',
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_PATH
+          : puppeteer.executablePath(),
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
     const page = await browser.newPage()
 
-    await page.goto(url) // Replace with your URL
+    await page.setRequestInterception(true)
+
+    page.on('request', (request) => {
+      const resourceType = request.resourceType()
+
+      // Block CSS, images, fonts, etc.
+      if (
+        resourceType === 'stylesheet' ||
+        resourceType === 'image' ||
+        resourceType === 'font' ||
+        resourceType === 'media'
+      ) {
+        request.abort()
+      } else {
+        request.continue()
+      }
+    })
+
+    await page.goto(url)
 
     await page.keyboard.press('Escape')
 
@@ -67,7 +90,6 @@ app.get('/user', async (req, res) => {
       }
     }
     await browser.close()
-
     for (const el of videoUrls) {
       const response = await axios.get(
         `https://developers.tiklydown.me/api/download?url=${el}`
@@ -86,9 +108,31 @@ app.get('/music', async (req, res) => {
   const data = []
   try {
     const browser = await puppeteer.launch({
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_PATH
+          : puppeteer.executablePath(),
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
     const page = await browser.newPage()
+
+    await page.setRequestInterception(true)
+
+    page.on('request', (request) => {
+      const resourceType = request.resourceType()
+
+      // Block CSS, images, fonts, etc.
+      if (
+        resourceType === 'stylesheet' ||
+        resourceType === 'image' ||
+        resourceType === 'font' ||
+        resourceType === 'media'
+      ) {
+        request.abort()
+      } else {
+        request.continue()
+      }
+    })
 
     await page.goto(url) // Replace with your URL
 
@@ -155,6 +199,24 @@ app.get('/tag', async (req, res) => {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
     const page = await browser.newPage()
+
+    await page.setRequestInterception(true)
+
+    page.on('request', (request) => {
+      const resourceType = request.resourceType()
+
+      // Block CSS, images, fonts, etc.
+      if (
+        resourceType === 'stylesheet' ||
+        resourceType === 'image' ||
+        resourceType === 'font' ||
+        resourceType === 'media'
+      ) {
+        request.abort()
+      } else {
+        request.continue()
+      }
+    })
 
     await page.goto(`https://www.tiktok.com/tag/${tag}`) // Replace with your URL
 
