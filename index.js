@@ -180,10 +180,10 @@ app.get('/music', async (req, res) => {
       )
       data.push(response.data)
     }
-    res.send('hiepvjpsieucappro')
+    res.send(data)
   } catch (error) {
     console.error(error)
-    res.status(500).send('hihi') // Handle errors gracefully and send an error response
+    res.status(500).send('You have to set limit') // Handle errors gracefully and send an error response
   }
 })
 
@@ -267,7 +267,7 @@ app.get('/tag', async (req, res) => {
     res.send(data)
   } catch (error) {
     console.error(error)
-    res.status(500).send(error) // Handle errors gracefully and send an error response
+    res.status(500).send('You have to set limit') // Handle errors gracefully and send an error response
   }
 })
 
